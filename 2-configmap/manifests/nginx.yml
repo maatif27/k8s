@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: helloworld-config
+  labels:
+    app: helloworld-config
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.11
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d
+
+    - name: helloworld-demo
+      image: maatif2701/helloworld:v1
+      ports:
+        - containerPort: 3000
+  volumes:
+    - name: config-volume
+      configMap: 
+        name: nginx-config
+        items:
+          - key: reverseproxy.conf
+            path: reverseproxy.conf   
